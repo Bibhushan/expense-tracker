@@ -7,6 +7,7 @@ import { Grid } from '@mui/material';
 import { PiGift, PiPizza, PiSuitcaseRollingLight, PiPencilSimpleThin } from "react-icons/pi";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { GrLinkPrevious, GrLinkNext } from "react-icons/gr"
+import { ExpenseBarChart, ExpensesPieChart } from './ExpenseCharts';
 
 const customStyles = {
   content: {
@@ -213,9 +214,9 @@ function App() {
 
   const [balance, setBalance] = useState(5000);
   const [expenses, setExpenses] = useState([
-                                    {title:'Initial Movie', price:350, category:'Entertainment', date:'2024-01-01'},
-                                    {title:'Initial Hotel', price:100, category:'Food', date:'2024-01-01'},
-                                    {title:'Initial Taxi', price:50, category:'Travel', date:'2024-01-01'}
+                                    {title:'Initial Movie', price:300, category:'Entertainment', date:'2024-01-01'},
+                                    {title:'Initial Hotel', price:125, category:'Food', date:'2024-01-01'},
+                                    {title:'Initial Taxi', price:75, category:'Travel', date:'2024-01-01'}
                                   ]);
 
   // const [editExpense, setEditExpense] = useState({title:null, price:null, category:null, date:null});
@@ -300,13 +301,13 @@ function App() {
     <div className="App">
       <SnackbarProvider />
       <>
-        <h1>Expense Tracker</h1>        
-        <Grid container className='top-box' spacing={2}>        
-          <Grid item xs={4}>
+        <h1 padding='2rem'>Expense Tracker</h1>        
+        <Grid container spacing={1} className='top-box' justify='space-between'>        
+          <Grid item xs={4} >
             <div className='top-box-item'>
               <p 
                 style={{fontSize:30, padding:'0.5rem', margin:0}}
-              >
+              > 
                 Wallet Balance:
                   <span 
                     style={{color:'#9DFF5B', fontWeight:'bold'}}>{" ₹" + balance}
@@ -321,7 +322,7 @@ function App() {
               </button>
             </div>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={4} >
             <div className='top-box-item'>
               <p 
                 style={{fontSize:30, padding:'0.5rem', margin:0}}
@@ -340,28 +341,13 @@ function App() {
               </button>
             </div>
           </Grid>
-          <Grid item xs={4}>
-            <div className='top-box-item' >
-              <p 
-                style={{fontSize:30, padding:'0.5rem'}}
-              >
-                Expenses:
-                  <span 
-                    style={{color:'#F4BB4A', fontWeight:'bold'}}>{" ₹" + expenses}
-                  </span>
-              </p>
-              <button 
-                className='round-button' 
-                style={{backgroundImage:'linear-gradient(to right, #FF9595, #FF3838)'}}
-              >
-                +Add Balance
-              </button>
-            </div>
+          <Grid item xs={4} minHeight={250}>
+            <ExpensesPieChart expenseData={expenses}/>
           </Grid>
         </Grid>
-        <Grid container spacing={2}>
-          <Grid item xs={8}>
-            <h2 style={{fontStyle:'italic'}}>Recent Transactions</h2>
+        <Grid container spacing={2} marginTop='1rem'>
+          <Grid item xs={7}>
+            <h2 style={{fontStyle:'italic', padding:'1rem'}}>Recent Transactions</h2>
             <div className='summary-box'>
               {currentExpenses.map((expense, id)=><ExpenseItem 
                                                     expense={expense} 
@@ -396,11 +382,13 @@ function App() {
               }
             </div>            
           </Grid>
-          <Grid item xs={4}>
-            <h2 style={{fontStyle:'italic'}}>Top Expenses</h2>
-            <div className='summary-box'>
-              Top Expenses here
-            </div>
+          <Grid item xs={5}>
+            <h2 style={{fontStyle:'italic', padding:'1rem'}}>Top Expenses</h2>
+            <Grid container>
+              <Grid item xs={12} className='summary-box'>
+                <ExpenseBarChart expenseData={expenses}/>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid> 
       </>
