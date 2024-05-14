@@ -63,7 +63,7 @@ function ExpensesPieChart({expenseData}){
 function ExpenseBarChart({expenseData}){
 
     const chartData = sumByCategory(expenseData, 'category', 'price');
-    chartData.sort((first, second)=>(second.price - first.price))
+    chartData.sort((first, second)=>(second.value - first.value));
 
     console.log('Descending sort data', chartData);
 
@@ -101,7 +101,7 @@ function ExpenseBarChart({expenseData}){
                 <Bar 
                     dataKey="value" 
                     fill="#8784D2" 
-                    radius={[0, 20, 20, 0]}
+                    radius={[0, 30, 30, 0]}
                 />
             </BarChart>
         </ResponsiveContainer>
