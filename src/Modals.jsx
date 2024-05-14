@@ -53,27 +53,27 @@ const customStyles = {
       console.log('adding expense:', expense);
       e.preventDefault();
       if (expense.title === null){
-        enqueueSnackbar('Expense title needs to be defined.')
+        enqueueSnackbar('Expense title needs to be defined.', {variant:'warning'})
         return;
       }
   
       if (expense.price === null){
-        enqueueSnackbar('Expense price needs to be defined.')
+        enqueueSnackbar('Expense price needs to be defined.', {variant:'warning'})
         return;
       }
   
       if (expense.price > currBalance){
-        enqueueSnackbar('Expense cannot be added as it is greater than current balance amount.')
+        enqueueSnackbar('Expense cannot be added as it is greater than current balance amount.', {variant:'info'})
         return;
       }
   
       if (expense.category === null){
-        enqueueSnackbar('Expense category needs to be defined.')
+        enqueueSnackbar('Expense category needs to be defined.', {variant:'warning'})
         return;
       }
   
       if (expense.date === null){
-        enqueueSnackbar('Expense date needs to be defined.')
+        enqueueSnackbar('Expense date needs to be defined.', {variant:'warning'})
         return;
       }
   

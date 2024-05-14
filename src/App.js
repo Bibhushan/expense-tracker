@@ -26,7 +26,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [currentExpenses, setCurrentExpenses] = useState([...expenses]);
 
-  const lastPage = Math.ceil(expenses.length/3);
+  const lastPage = ()=>{return Math.ceil(expenses.length/3)};
 
   const getItemIndex = (indexOnPage)=>{
     return (currentPage-1)*3 + indexOnPage;
@@ -77,7 +77,16 @@ function App() {
   }
 
   const handlePageChange = (newPage)=>{
-    setCurrentPage(newPage);    
+    // console.log('tring to change to page ', newPage, lastPage());
+    if (newPage < 1){
+      enqueueSnackbar('Cannot go to previous page as we are already at the first page', {variant:'info'});      
+    }
+    else if (newPage > lastPage()){
+      enqueueSnackbar('Cannot go to next page as we are already at the last page', {variant:'info'});
+    }
+    else {
+      setCurrentPage(newPage);  
+    }  
   }
 
   useEffect(()=>{
@@ -118,7 +127,7 @@ function App() {
           <Grid item xs={4} >
             <div className='top-box-item'>
               <p 
-                style={{fontSize:30, padding:'0.5rem', margin:0}}
+                style={{fontSize:30, padding:'1.5rem 0.5rem', margin:0}}
               > 
                 Wallet Balance:
                   <span 
@@ -137,7 +146,7 @@ function App() {
           <Grid item xs={4} >
             <div className='top-box-item'>
               <p 
-                style={{fontSize:30, padding:'0.5rem', margin:0}}
+                style={{fontSize:30, padding:'1.5rem 0.5rem', margin:0}}
               >
                 Expenses:
                   <span 
@@ -159,20 +168,22 @@ function App() {
         </Grid>
         <Grid container spacing={2} marginTop='1rem'>
           <Grid item xs={7}>
-            <h2 style={{fontStyle:'italic', padding:'1rem'}}>Recent Transactions</h2>
+            <h2 style={{fontStyle:'italic', padding:'0rem 1rem'}}>Recent Transactions</h2>
             <div className='summary-box'>
-              {currentExpenses.map((expense, id)=><ExpenseItem 
-                                                    expense={expense} 
-                                                    // onSelect={()=>setEditExpenseID(getItemIndex(id))}
-                                                    handleDelete={()=>handleExpenseDelete(getItemIndex(id))}
-                                                    handleEdit={()=>handleExpenseEdit(getItemIndex(id))}                                                    
-                                                  />)}
-              {lastPage > 1 && 
+              <div style={{height:'240px'}}>
+                {currentExpenses.map((expense, id)=><ExpenseItem 
+                                                      expense={expense} 
+                                                      // onSelect={()=>setEditExpenseID(getItemIndex(id))}
+                                                      handleDelete={()=>handleExpenseDelete(getItemIndex(id))}
+                                                      handleEdit={()=>handleExpenseEdit(getItemIndex(id))}                                                    
+                                                    />)}
+              </div>
+              {lastPage() > 0 && 
                 <div className='page-controls'>
                   <button 
                     className='grey-circle' 
                     onClick={()=>handlePageChange(currentPage-1)}
-                    disabled = {currentPage === 1}
+                    // disabled = {currentPage === 1}
                     style={{boxShadow:'0px 4px 4px #626262'}}
                   >
                     <GrLinkPrevious size={16}/>
@@ -185,7 +196,7 @@ function App() {
                   <button 
                     className='grey-circle'
                     onClick={()=>handlePageChange(currentPage+1)}
-                    disabled = {currentPage === lastPage}                  
+                    // disabled = {currentPage === lastPage}                  
                     style={{boxShadow:'0px 4px 4px #626262'}}
                   >
                     <GrLinkNext size={16}/>
@@ -195,7 +206,7 @@ function App() {
             </div>            
           </Grid>
           <Grid item xs={5}>
-            <h2 style={{fontStyle:'italic', padding:'1rem'}}>Top Expenses</h2>
+            <h2 style={{fontStyle:'italic', padding:'0rem 1rem'}}>Top Expenses</h2>
             <Grid container>
               <Grid item xs={12} className='summary-box'>
                 <ExpenseBarChart expenseData={expenses}/>
